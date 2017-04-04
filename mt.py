@@ -82,13 +82,16 @@ def find_first_neq(xs, item):
     raise ValueError("Item != {0} not found.".format(item))
 
 
+def make_grid(width, height, fill):
+    row = [fill] * width
+    return [row.copy() for _ in range(height)]
+
+
 def maze_transform(maze):
     # invariant: only one entrance and exit.
     assert maze[0].count(1) == 1
     assert maze[-1].count(1) == 1
-
-    row = [NULL_NODE] * len(maze[0])
-    nodes = [row.copy() for _ in range(len(maze))]
+    nodes = make_grid(len(maze[0]), len(maze), NULL_NODE)
     for y, row in enumerate(maze):
         for x, cell in enumerate(row):
             # its a wall, do nothing.
