@@ -1,3 +1,6 @@
+from collections import deque
+
+
 class Node:
     def __init__(self, x, y):
         self.x = x
@@ -76,6 +79,7 @@ def find_first_neq(xs, item):
     for n in xs:
         if n != item:
             return n
+    raise ValueError("Item != {0} not found.".format(item))
 
 
 def maze_transform(maze):
@@ -111,6 +115,25 @@ def maze_transform(maze):
                 node.top = top(nodes, pos)
     root = find_first_neq(nodes[0], NULL_NODE)
     tail = find_first_neq(nodes[-1], NULL_NODE)
-    assert root != NULL_NODE
-    assert tail != NULL_NODE
     return root, tail
+
+
+def children(node):
+    yield node.left
+    yield node.right
+    yield node.bottom
+
+
+def breadth_first(root, tail):
+    queue = deque([root, node] for node in children(root))
+    while queue:
+        path = queue.pop()
+        node = path[-1]
+        if node is tail:
+            return path
+        for child in children(node):
+            if child is None or child.visited:
+                continue
+            queue.append(path + [child])
+            child.visited = True
+    return []

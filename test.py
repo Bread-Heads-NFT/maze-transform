@@ -18,7 +18,3 @@ maze2 = [
     [0, 1, 1, 0, 1, 1, 0],
     [0, 0, 1, 0, 0, 0, 0],
 ]
-
-maze_transform(maze)
-print()
-maze_transform(maze2)
