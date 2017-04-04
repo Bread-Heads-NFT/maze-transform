@@ -1,33 +1,33 @@
-template = """
-<body>
-  <style>
-  table {{ border-collapse: collapse; }}
-  td {{ width: 20px; height: 20px; }}
-  </style>
-  {table}
-"""
+import png
+from mt import make_grid
 
 
-class TD:
-    def __init__(self, color):
-        self.color = color
-
-    def render(self):
-        return "<td style='background-color: %s'>&nbsp;</td>" % (self.color,)
+BLACK = (0, 0, 0)
+RED   = (255, 0, 0)
+WHITE = (255, 255, 255)
 
 
-class TR(list):
-    def render(self):
-        return '<tr>%s</tr>' % (''.join(td.render() for td in self),)
+def dim(maze):
+    return len(maze[0]), len(maze)
 
 
-class Table:
-    def __init__(self, width, height, default_color="#CCC"):
-        self.rows = []
-        for _ in range(height):
-            row = [TD(default_color) for _ in range(width)]
-            self.rows.append(TR(row))
+def plot_maze_path(maze, path, filename):
+    width, height = dim(maze)
+    array = make_grid(width, height, BLACK)
 
-    def render(self):
-        tbl = '<table>%s</table>' % (''.join(tr.render() for tr in self.rows),)
-        return template.format(table=tbl)
+    for y in range(height):
+        for x in range(width):
+            if maze[y][x] == 1:
+                array[y][x] = WHITE
+
+    for idx, node in enumerate(path):
+        x, y = node.x, node.y
+        array[y][x] = RED
+        if idx == 0:
+            continue
+        prev = path[idx - 1]
+        px, py = prev.x, prev.y
+        for iy in range(min(y, py), max(y, py) + 1): array[iy][x] = RED
+        for ix in range(min(x, px), max(x, px) + 1): array[y][ix] = RED
+
+    png.from_array(array, mode='RGB').save(filename)

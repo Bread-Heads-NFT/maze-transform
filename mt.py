@@ -122,6 +122,7 @@ def maze_transform(maze):
 
 
 def children(node):
+    yield node.top
     yield node.left
     yield node.right
     yield node.bottom
