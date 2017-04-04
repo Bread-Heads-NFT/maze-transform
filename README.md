@@ -1,8 +1,11 @@
+<img src='images/maze-icon.png' width=100 />
+
 # maze-transform
 
 Inspired by a particular Computerphile video about solving mazes.
-Takes in a 2D array of booleans and returns a graph. The plan is
-to optimise this graph creation as much as possible.
+Takes in a 2D array of booleans and returns an optimised (least nodes
+required to traverse the maze) graph. The plan is to optimise this
+graph creation as much as possible.
 
 ### plans
 
