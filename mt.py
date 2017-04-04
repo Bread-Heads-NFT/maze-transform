@@ -75,16 +75,16 @@ left   = get_with_delta(-1, +0)
 right  = get_with_delta(+1, +0)
 
 
+def make_grid(width, height, fill):
+    row = [fill] * width
+    return [row.copy() for _ in range(height)]
+
+
 def find_first_neq(xs, item):
     for n in xs:
         if n != item:
             return n
     raise ValueError("Item != {0} not found.".format(item))
-
-
-def make_grid(width, height, fill):
-    row = [fill] * width
-    return [row.copy() for _ in range(height)]
 
 
 def maze_transform(maze):
