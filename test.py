@@ -9,3 +9,5 @@ maze = [
 ]
 
 root, tail = maze_transform(maze)
+for row in maze:
+    print(row)

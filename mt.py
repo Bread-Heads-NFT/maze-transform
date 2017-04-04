@@ -1,16 +1,3 @@
-from functools import partial
-
-
-maze = [
-    [0, 1, 0, 0, 0, 0],
-    [0, 1, 1, 1, 1, 0],
-    [0, 0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 1, 0],
-    [0, 1, 1, 1, 1, 0],
-    [0, 1, 0, 0, 0, 0],
-    ]
-
-
 class Node:
     def __init__(self, x, y):
         self.x = x
@@ -65,21 +52,30 @@ NULL_NODE = Node(-1, -1)
 NULL_NODE.visited = True
 
 
-def get_bounded(delta, maze, coord, default=NULL_NODE):
-    dx, dy = delta
-    x0, y0 = coord
-    x = x0 + dx
-    y = y0 + dy
-    print(x, y)
-    if 0 <= y < len(maze) and 0 <= x < len(maze[0]):
-        return maze[y][x]
+def get_bounded(grid, coord, default):
+    x, y = coord
+    if 0 <= y < len(grid) and 0 <= x < len(grid[0]):
+        return grid[y][x]
     return default
 
 
-top    = partial(get_bounded, (0, -1))
-bottom = partial(get_bounded, (0, +1))
-left   = partial(get_bounded, (-1, 0))
-right  = partial(get_bounded, (+1, 0))
+def get_with_delta(dx, dy):
+    def get(grid, coord, default=NULL_NODE):
+        x, y = coord
+        return get_bounded(grid, (x + dx, y + dy), default)
+    return get
+
+
+top    = get_with_delta(+0, -1)
+bottom = get_with_delta(+0, +1)
+left   = get_with_delta(-1, +0)
+right  = get_with_delta(+1, +0)
+
+
+def find_first_neq(xs, item):
+    for n in xs:
+        if n != item:
+            return n
 
 
 def maze_transform(maze):
@@ -149,15 +145,10 @@ def maze_transform(maze):
                 node.top = top(nodes, pos)
                 node.left = left(nodes, pos)
                 continue
-    print(nodes)
-    root = NULL_NODE
-    for node in nodes[0]:
-        if node is not NULL_NODE:
-            root = node
-    tail = NULL_NODE
-    for node in nodes[-1]:
-        if node is not NULL_NODE:
-            tail = node
+    for row in nodes:
+        print(row)
+    root = find_first_neq(nodes[0], NULL_NODE)
+    tail = find_first_neq(nodes[-1], NULL_NODE)
     assert root != NULL_NODE
     assert tail != NULL_NODE
     return root, tail
