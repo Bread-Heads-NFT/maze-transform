@@ -9,7 +9,7 @@ class Node:
         self.visited = False
 
     def __repr__(self):
-        return 'Node({0}, {1})'.format(self.x, self.y)
+        return 'Node({0:+}, {1:+})'.format(self.x, self.y)
 
     @property
     def left(self):
@@ -95,56 +95,18 @@ def maze_transform(maze):
             bc = bottom(maze, pos, 0)
             rc = right(maze, pos, 0)
             lc = left(maze, pos, 0)
-            no_paths = tc + bc + rc + lc
-            if no_paths == 4:
-                node = Node(x, y)
-                nodes[y][x] = node
-                node.left = left(nodes, pos)
-                node.top = top(nodes, pos)
-                continue
-            if no_paths == 3:
-                node = Node(x, y)
-                nodes[y][x] = node
-                if lc == 1:
-                    node.left = left(nodes, pos)
-                if tc == 1:
-                    node.top = top(nodes, pos)
-                continue
-            if no_paths == 1:
-                node = Node(x, y)
-                nodes[y][x] = node
-                if lc == 1:
-                    node.left = left(nodes, pos)
-                if tc == 1:
-                    node.top = top(nodes, pos)
-                continue
-            assert no_paths == 2
-            if tc == 1 and bc == 1:
-                nodes[y][x] = top(nodes, pos)
-                continue
-            if lc == 1 and rc == 1:
+            if tc == 0 and bc == 0 and lc == 1 and rc == 1:
                 nodes[y][x] = left(nodes, pos)
                 continue
-            if tc == 0 and rc == 0:
-                node = Node(x, y)
-                nodes[y][x] = node
+            if tc == 1 and bc == 1 and lc == 0 and rc == 0:
+                nodes[y][x] = top(nodes, pos)
+                continue
+            node = Node(x, y)
+            nodes[y][x] = node
+            if lc == 1:
                 node.left = left(nodes, pos)
-                continue
-            if tc == 0 and lc == 0:
-                node = Node(x, y)
-                nodes[y][x] = node
-                continue
-            if bc == 0 and lc == 0:
-                node = Node(x, y)
-                nodes[y][x] = node
+            if tc == 1:
                 node.top = top(nodes, pos)
-                continue
-            if bc == 0 and rc == 0:
-                node = Node(x, y)
-                nodes[y][x] = node
-                node.top = top(nodes, pos)
-                node.left = left(nodes, pos)
-                continue
     for row in nodes:
         print(row)
     root = find_first_neq(nodes[0], NULL_NODE)

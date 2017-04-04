@@ -8,6 +8,17 @@ maze = [
     [0, 1, 0, 0],
 ]
 
-root, tail = maze_transform(maze)
-for row in maze:
-    print(row)
+maze2 = [
+    [0, 0, 0, 1, 0, 0, 0],
+    [0, 1, 1, 1, 1, 1, 0],
+    [0, 1, 0, 0, 0, 1, 0],
+    [0, 1, 0, 1, 0, 1, 0],
+    [0, 1, 1, 1, 0, 1, 0],
+    [0, 1, 0, 0, 0, 1, 0],
+    [0, 1, 1, 0, 1, 1, 0],
+    [0, 0, 1, 0, 0, 0, 0],
+]
+
+maze_transform(maze)
+print()
+maze_transform(maze2)
