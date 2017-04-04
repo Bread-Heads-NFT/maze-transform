@@ -95,20 +95,20 @@ def maze_transform(maze):
             bc = bottom(maze, pos, 0)
             rc = right(maze, pos, 0)
             lc = left(maze, pos, 0)
+            # special cases: horizontal and vertical 'paths' with no junctions
             if tc == 0 and bc == 0 and lc == 1 and rc == 1:
                 nodes[y][x] = left(nodes, pos)
                 continue
             if tc == 1 and bc == 1 and lc == 0 and rc == 0:
                 nodes[y][x] = top(nodes, pos)
                 continue
+            # general case: junction
             node = Node(x, y)
             nodes[y][x] = node
             if lc == 1:
                 node.left = left(nodes, pos)
             if tc == 1:
                 node.top = top(nodes, pos)
-    for row in nodes:
-        print(row)
     root = find_first_neq(nodes[0], NULL_NODE)
     tail = find_first_neq(nodes[-1], NULL_NODE)
     assert root != NULL_NODE
