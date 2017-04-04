@@ -127,7 +127,7 @@ def children(node):
 def breadth_first(root, tail):
     queue = deque([root, node] for node in children(root))
     while queue:
-        path = queue.pop()
+        path = queue.popleft()
         node = path[-1]
         if node is tail:
             return path
