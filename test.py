@@ -1,16 +1,17 @@
 from pprint import pprint
-from mt import maze_transform, breadth_first, make_grid
+from mt import maze_transform, breadth_first
 from mazegen import gen
 from vis import plot_maze_path
+from grid import Grid
 
-maze = [
+maze = Grid.from_array([
     [0, 0, 1, 0],
     [0, 1, 1, 0],
     [0, 1, 0, 0],
     [0, 1, 0, 0],
-]
+])
 
-maze2 = [
+maze2 = Grid.from_array([
     [0, 0, 0, 1, 0, 0, 0],
     [0, 1, 1, 1, 1, 1, 0],
     [0, 1, 0, 0, 0, 1, 0],
@@ -19,7 +20,7 @@ maze2 = [
     [0, 1, 0, 0, 0, 1, 0],
     [0, 1, 1, 0, 1, 1, 0],
     [0, 0, 1, 0, 0, 0, 0],
-]
+])
 
 root, tail = maze_transform(maze)
 path = breadth_first(root, tail)
@@ -45,7 +46,17 @@ assert path == [
 ]
 
 
-maze = gen(500, 500)
-head, tail = maze_transform(maze)
-path = breadth_first(head, tail)
-plot_maze_path(maze, path, 'grid.png')
+DIMS = [
+    (10, 10),
+    (50, 50),
+    (10, 100),
+    (100, 100),
+    (500, 500),
+]
+
+
+for dim in DIMS:
+    maze = gen(*dim)
+    head, tail = maze_transform(maze)
+    path = breadth_first(head, tail)
+    plot_maze_path(maze, path, 'grid-{0}x{1}.png'.format(*dim))

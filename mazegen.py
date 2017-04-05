@@ -1,29 +1,6 @@
 from collections import namedtuple
 from random import choice, randint
-from mt import make_grid
-
-
-Pos = namedtuple('Pos', ['x', 'y'])
-
-
-def width(maze):
-    return len(maze[0])
-
-
-def height(maze):
-    return len(maze)
-
-
-def assign(maze, p, v):
-    maze[p.y][p.x] = v
-
-
-def get(maze, p):
-    return maze[p.y][p.x]
-
-
-def is_legal(maze, pos):
-    return 0 <= pos.x < width(maze) and 0 <= pos.y < height(maze)
+from grid import Grid, Pos
 
 
 def dist2(pos):
@@ -34,16 +11,12 @@ def dist2(pos):
     yield Pos(x, y - 2)
 
 
-def frontier(maze, pos):
-    for p in dist2(pos):
-        if is_legal(maze, p) and get(maze, p) == 0:
-            yield p
+def frontier(grid, pos):
+    return (p for p in dist2(pos) if grid.get(p) == 0)
 
 
-def neighbors(maze, pos):
-    for p in dist2(pos):
-        if is_legal(maze, p) and get(maze, p) == 1:
-            yield p
+def neighbors(grid, pos):
+    return (p for p in dist2(pos) if grid.get(p) == 1)
 
 
 def between(A, B):
@@ -53,9 +26,9 @@ def between(A, B):
 
 
 def gen(width, height):
-    maze = make_grid(width, height - 1, fill=0)
+    maze = Grid.from_dim(width, height - 1, fill=0)
     seed = Pos(randint(0, width - 1), 0)
-    assign(maze, seed, 1)
+    maze[seed] = 1
     front = list(frontier(maze, seed))
     explored = set([seed])
     while front:
@@ -64,14 +37,14 @@ def gen(width, height):
         if cell in explored:
             continue
         explored.add(cell)
-        assign(maze, cell, 1)
+        maze[cell] = 1
         peer = choice(list(neighbors(maze, cell)))
-        assign(maze, between(peer, cell), 1)
+        maze[between(peer, cell)] = 1
         front.extend(frontier(maze, cell))
 
-    entrance = make_entrance(maze[0])
-    exit = make_entrance(maze[-1])
-    return [entrance] + maze + [exit]
+    entrance = make_entrance(maze.array[0])
+    exit = make_entrance(maze.array[-1])
+    return Grid.from_array([entrance] + maze.array + [exit])
 
 
 def make_entrance(reference):

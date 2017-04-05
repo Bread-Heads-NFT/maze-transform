@@ -1,4 +1,5 @@
 from collections import deque
+from grid import Grid
 
 
 class Node:
@@ -55,29 +56,17 @@ NULL_NODE = Node(-1, -1)
 NULL_NODE.visited = True
 
 
-def get_bounded(grid, coord, default):
-    x, y = coord
-    if 0 <= y < len(grid) and 0 <= x < len(grid[0]):
-        return grid[y][x]
-    return default
-
-
-def get_with_delta(dx, dy):
-    def get(grid, coord, default=NULL_NODE):
+def apply_delta(dx, dy):
+    def getter(coord):
         x, y = coord
-        return get_bounded(grid, (x + dx, y + dy), default)
-    return get
+        return (x + dx, y + dy)
+    return getter
 
 
-top    = get_with_delta(+0, -1)
-bottom = get_with_delta(+0, +1)
-left   = get_with_delta(-1, +0)
-right  = get_with_delta(+1, +0)
-
-
-def make_grid(width, height, fill):
-    row = [fill] * width
-    return [row.copy() for _ in range(height)]
+top    = apply_delta(+0, -1)
+bottom = apply_delta(+0, +1)
+left   = apply_delta(-1, +0)
+right  = apply_delta(+1, +0)
 
 
 def find_first_neq(xs, item):
@@ -89,35 +78,35 @@ def find_first_neq(xs, item):
 
 def maze_transform(maze):
     # invariant: only one entrance and exit.
-    assert maze[0].count(1) == 1
-    assert maze[-1].count(1) == 1
-    nodes = make_grid(len(maze[0]), len(maze), NULL_NODE)
-    for y, row in enumerate(maze):
+    assert maze.array[0].count(1) == 1
+    assert maze.array[-1].count(1) == 1
+    nodes = Grid.from_dim(maze.width, maze.height, NULL_NODE)
+    for y, row in enumerate(maze.array):
         for x, cell in enumerate(row):
             # its a wall, do nothing.
             if cell == 0:
                 continue
             pos = (x, y)
-            tc = top(maze, pos, 0)
-            bc = bottom(maze, pos, 0)
-            rc = right(maze, pos, 0)
-            lc = left(maze, pos, 0)
+            tc = maze.get(top(pos), 0)
+            bc = maze.get(bottom(pos), 0)
+            rc = maze.get(right(pos), 0)
+            lc = maze.get(left(pos), 0)
             # horizontal and vertical 'paths' with no junctions
             if tc == bc == 0 and lc == rc == 1:
-                nodes[y][x] = left(nodes, pos)
+                nodes[x,y] = nodes.get(left(pos), NULL_NODE)
                 continue
             if tc == bc == 1 and lc == rc == 0:
-                nodes[y][x] = top(nodes, pos)
+                nodes[x,y] = nodes.get(top(pos), NULL_NODE)
                 continue
             # junction or dead ends.
             node = Node(x, y)
-            nodes[y][x] = node
+            nodes[x,y] = node
             if lc == 1:
-                node.left = left(nodes, pos)
+                node.left = nodes.get(left(pos), NULL_NODE)
             if tc == 1:
-                node.top = top(nodes, pos)
-    root = find_first_neq(nodes[0], NULL_NODE)
-    tail = find_first_neq(nodes[-1], NULL_NODE)
+                node.top = nodes.get(top(pos), NULL_NODE)
+    root = find_first_neq(nodes.array[0], NULL_NODE)
+    tail = find_first_neq(nodes.array[-1], NULL_NODE)
     return root, tail
 
 

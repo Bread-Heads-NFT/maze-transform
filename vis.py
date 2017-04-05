@@ -1,16 +1,10 @@
 import png
 import math
-from mt import make_grid
+from grid import Grid
 
 
 BLACK = (0, 0, 0)
-RED   = (255, 0, 0)
-BLUE  = (0, 0, 255)
 WHITE = (255, 255, 255)
-
-
-def dim(maze):
-    return len(maze[0]), len(maze)
 
 
 def gradient(i, n):
@@ -21,24 +15,23 @@ def gradient(i, n):
 
 
 def plot_maze_path(maze, path, filename):
-    width, height = dim(maze)
-    array = make_grid(width, height, BLACK)
+    grid = Grid.from_dim(maze.width, maze.height, BLACK)
     total = len(path)
 
-    for y in range(height):
-        for x in range(width):
-            if maze[y][x] == 1:
-                array[y][x] = WHITE
+    for y in range(maze.height):
+        for x in range(maze.width):
+            if maze[x,y] == 1:
+                grid[x,y] = WHITE
 
     for idx, node in enumerate(path):
         color = gradient(idx + 1, total)
         x, y = node.x, node.y
-        array[y][x] = color
+        grid[x,y] = color
         if idx == 0:
             continue
         prev = path[idx - 1]
         px, py = prev.x, prev.y
-        for iy in range(min(y, py), max(y, py) + 1): array[iy][x] = color
-        for ix in range(min(x, px), max(x, px) + 1): array[y][ix] = color
+        for iy in range(min(y, py), max(y, py) + 1): grid[x,iy] = color
+        for ix in range(min(x, px), max(x, px) + 1): grid[ix,y] = color
 
-    png.from_array(array, mode='RGB').save(filename)
+    png.from_array(grid.array, mode='RGB').save(filename)
