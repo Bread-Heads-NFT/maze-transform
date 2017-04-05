@@ -33,7 +33,7 @@ class Grid:
     @classmethod
     def from_dim(cls, width, height, fill):
         row = [fill] * width
-        array = [row.copy() for _ in range(height)]
+        array = [row[:] for _ in range(height)]
         return cls(width, height, array)
 
     @classmethod

@@ -8,7 +8,7 @@ WHITE = (255, 255, 255)
 
 
 def gradient(i, n):
-    b = math.ceil(255 * (1 - i / float(n)))
+    b = int(255 * (1 - i / float(n)))
     r = 255 - b
     g = 0
     return r, g, b
