@@ -14,7 +14,7 @@ def height(maze):
     return len(maze)
 
 
-def set(maze, p, v):
+def assign(maze, p, v):
     maze[p.y][p.x] = v
 
 
@@ -55,14 +55,18 @@ def between(A, B):
 def gen(width, height):
     maze = make_grid(width, height - 1, fill=0)
     seed = Pos(randint(0, width - 1), 0)
-    set(maze, seed, 1)
+    assign(maze, seed, 1)
     front = list(frontier(maze, seed))
+    explored = set([seed])
     while front:
         idx = randint(0, len(front) - 1)
         cell = front.pop(idx)
-        set(maze, cell, 1)
+        if cell in explored:
+            continue
+        explored.add(cell)
+        assign(maze, cell, 1)
         peer = choice(list(neighbors(maze, cell)))
-        set(maze, between(peer, cell), 1)
+        assign(maze, between(peer, cell), 1)
         front.extend(frontier(maze, cell))
 
     entrance = make_entrance(maze[0])

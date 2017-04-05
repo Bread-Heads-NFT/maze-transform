@@ -45,7 +45,7 @@ assert path == [
 ]
 
 
-maze = gen(100, 100)
+maze = gen(500, 500)
 head, tail = maze_transform(maze)
 path = breadth_first(head, tail)
 plot_maze_path(maze, path, 'grid.png')
