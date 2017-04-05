@@ -26,6 +26,8 @@ def between(A, B):
 
 
 def gen(width, height):
+    if height % 2 == 1:
+        height = height - 1
     maze = Grid.from_dim(width, height - 1, fill=0)
     seed = Pos(randint(0, width - 1), 0)
     maze[seed] = 1

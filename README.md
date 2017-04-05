@@ -1,16 +1,10 @@
-<img src='images/maze-icon.png' width=100 />
-
 # maze-transform
 
-Inspired by a particular Computerphile video about solving mazes.
-Takes in a 2D array of booleans (True => path, False => wall) and
-returns an optimised (least nodes required to traverse the maze)
-graph. The plan is to optimise this graph creation as much as possible.
+<img src='images/maze-icon.png' width=100 align='left' hspace='5' vspace='5'/>
 
-### plans
+Inspired by a particular Computerphile video. Generates mazes (2d
+array of booleans) and solves them by converting into a compact
+graph and running textbook algorithms. Usage:
 
- - actually write this
- - prove it correct
- - make it fast
- - make the solving algorithm online (solve as you read, generate
- the nodes lazily?)
+    # make a 100x50 maze
+    $ ./maze 100 50 file.png
