@@ -3,6 +3,7 @@ import math
 from grid import Grid
 
 
+range = getattr(__builtins__, 'xrange', range)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 

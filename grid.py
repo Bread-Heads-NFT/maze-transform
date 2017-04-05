@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-
+range = getattr(__builtins__, 'xrange', range)
 Pos = namedtuple('Pos', 'x,y')
 
 
