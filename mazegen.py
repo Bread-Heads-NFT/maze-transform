@@ -37,7 +37,7 @@ def gen(width, height):
         height += 1
     if width % 2 == 0:
         width += 1
-    maze = Grid.from_dim(width, height, fill=0)
+    maze = Grid.from_dim(width, height - 2, fill=0)
     seed = Pos(odd(width), 0)
     maze[seed] = 1
     front = list(frontier(maze, seed))
