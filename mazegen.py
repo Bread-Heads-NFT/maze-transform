@@ -25,11 +25,20 @@ def between(A, B):
     return Pos(x, y)
 
 
+def odd(width):
+    while True:
+        r = randint(2, width - 1)
+        if r % 2 == 0:
+            return r - 1
+
+
 def gen(width, height):
-    if height % 2 == 1:
-        height = height - 1
-    maze = Grid.from_dim(width, height - 1, fill=0)
-    seed = Pos(randint(0, width - 1), 0)
+    if height % 2 == 0:
+        height += 1
+    if width % 2 == 0:
+        width += 1
+    maze = Grid.from_dim(width, height, fill=0)
+    seed = Pos(odd(width), 0)
     maze[seed] = 1
     front = list(frontier(maze, seed))
     explored = set([seed])
