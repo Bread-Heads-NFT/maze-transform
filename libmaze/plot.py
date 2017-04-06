@@ -38,18 +38,26 @@ def plot_maze(maze):
     return grid
 
 
+def autorange(a, b):
+    return range(
+            min(a, b),
+            max(a, b) + 1,
+            )
+
+
+def path_between(prev, node):
+    for x in autorange(node.x, prev.x): yield x, node.y
+    for y in autorange(node.y, prev.y): yield node.x, y
+
+
 def plot_heatmap(maze, path):
     grid = plot_maze(maze)
     trace = Grid.from_dim(maze.width, maze.height, 0)
 
     for prev, node in prev_curr(path):
-        x, y = node.x, node.y
-        if prev is None:
-            trace[x,y] = 1
-            continue
-        px, py = prev.x, prev.y
-        for ix in range(min(x, px), max(x, px) + 1): trace[ix,y] += 1
-        for iy in range(min(y, py), max(y, py) + 1): trace[x,iy] += 1
+        prev = node if prev is None else prev
+        for x, y in path_between(prev, node):
+            trace[x,y] += 1
 
     biggest = max(max(r) for r in trace)
     for x, y in trace.indices():
@@ -66,12 +74,8 @@ def plot_path(maze, path):
     total = len(path)
     for idx, (prev, node) in enumerate(prev_curr(path)):
         color = path_gradient(idx + 1, total)
-        x, y = node.x, node.y
-        grid[x,y] = color
-        if prev is None:
-            continue
-        px, py = prev.x, prev.y
-        for iy in range(min(y, py), max(y, py) + 1): grid[x,iy] = color
-        for ix in range(min(x, px), max(x, px) + 1): grid[ix,y] = color
+        prev = node if prev is None else prev
+        for x, y in path_between(prev, node):
+            grid[x,y] = color
 
     return png.from_array(grid.array, mode='RGB')

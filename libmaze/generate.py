@@ -33,7 +33,7 @@ def random_even(width):
             return r - 1
 
 
-def gen(width, height):
+def generate(width, height):
     if height % 2 == 0:
         height += 1
     if width % 2 == 0:
