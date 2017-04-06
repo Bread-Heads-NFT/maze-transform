@@ -57,10 +57,7 @@ def prims(width, height):
         peer = choice(list(neighbors(maze, cell)))
         maze[between(peer, cell)] = 1
         front.extend(frontier(maze, cell))
-
-    entrance = make_entrance(maze.array[0])
-    exit = make_entrance(maze.array[-1])
-    return Grid.from_array([entrance] + maze.array + [exit])
+    return wrap(maze)
 
 
 def recursive_backtrack(width, height):
@@ -77,10 +74,7 @@ def recursive_backtrack(width, height):
     unexplored.remove(cell)
     while unexplored:
         maze[cell] = 1
-        peers = [
-            p for p in dist2(cell)
-            if maze.legal(p) and p in unexplored
-            ]
+        peers = [p for p in dist2(cell) if maze.legal(p) and p in unexplored]
         if not peers:
             if not stack:
                 break
@@ -91,7 +85,10 @@ def recursive_backtrack(width, height):
         maze[between(random_peer, cell)] = 1
         cell = random_peer
         unexplored.remove(random_peer)
+    return wrap(maze)
 
+
+def wrap(maze):
     entrance = make_entrance(maze.array[0])
     exit = make_entrance(maze.array[-1])
     return Grid.from_array([entrance] + maze.array + [exit])
