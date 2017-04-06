@@ -2,9 +2,6 @@ from random import choice, randint
 from .grid import Grid
 
 
-range = getattr(__builtins__, 'xrange', range)
-
-
 def dist2(pos):
     x, y = pos
     yield x + 2, y

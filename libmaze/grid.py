@@ -1,3 +1,6 @@
+from ._compat import range
+
+
 class Grid:
     def __init__(self, width, height, array):
         self.width = width
@@ -14,6 +17,11 @@ class Grid:
 
     def __iter__(self):
         return iter(self.array)
+
+    def indices(self):
+        for y in range(self.height):
+            for x in range(self.width):
+                yield x,y
 
     def legal(self, pos):
         x, y = pos

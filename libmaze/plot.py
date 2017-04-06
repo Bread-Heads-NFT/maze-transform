@@ -32,10 +32,9 @@ def heat_gradient(i, n):
 
 def plot_maze(maze):
     grid = Grid.from_dim(maze.width, maze.height, BLACK)
-    for y in range(maze.height):
-        for x in range(maze.width):
-            if maze[x,y] == 1:
-                grid[x,y] = WHITE
+    for x, y in maze.indices():
+        if maze[x,y] == 1:
+            grid[x,y] = WHITE
     return grid
 
 
@@ -53,11 +52,10 @@ def plot_heatmap(maze, path):
         for iy in range(min(y, py), max(y, py) + 1): trace[x,iy] += 1
 
     biggest = max(max(r) for r in trace)
-    for y, row in enumerate(trace):
-        for x, v in enumerate(row):
-            if trace[x,y] == 0:
-                continue
-            grid[x,y] = heat_gradient(v, biggest)
+    for x, y in trace.indices():
+        if trace[x,y] == 0:
+            continue
+        grid[x,y] = heat_gradient(trace[x,y], biggest)
 
     return png.from_array(grid.array, mode='RGB')
 
