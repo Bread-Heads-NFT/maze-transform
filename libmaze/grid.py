@@ -23,6 +23,11 @@ class Grid:
             for x in range(self.width):
                 yield x,y
 
+    def values(self):
+        for y, row in enumerate(self.array):
+            for x, v in enumerate(row):
+                yield (x, y), v
+
     def legal(self, pos):
         x, y = pos
         return 0 <= x < self.width and 0 <= y < self.height

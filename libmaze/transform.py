@@ -46,8 +46,7 @@ def transform(maze):
     assert maze.array[0].count(1) == 1
     assert maze.array[-1].count(1) == 1
     nodes = Grid.from_dim(maze.width, maze.height, NULL_NODE)
-    for x, y in maze.indices():
-        cell = maze[x,y]
+    for (x, y), cell in maze.values():
         # its a wall, do nothing.
         if cell == 0:
             continue
