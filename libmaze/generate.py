@@ -1,5 +1,5 @@
 from random import choice, randint
-from grid import Grid
+from .grid import Grid
 
 
 range = getattr(__builtins__, 'xrange', range)
@@ -48,7 +48,8 @@ def gen(width, height):
     front = list(frontier(maze, seed))
     explored = set([seed])
     while front:
-        cell = front.pop()
+        idx = randint(0, len(front) - 1)
+        cell = front.pop(idx)
         if cell in explored:
             continue
         explored.add(cell)

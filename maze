@@ -9,19 +9,21 @@ options:
   -h --help           displays this page.
   --solver=<solver>   choose which solver to use, one of:
                         bf (breadth first, default),
+                        df (depth first),
                         rm (random mouse)
 """
 
-from docopt import docopt
+from libmaze.vendor.docopt import docopt
 from libmaze.generate import gen
 from libmaze.transform import transform
-from libmaze.solvers import random_mouse, breadth_first
+from libmaze.solvers import random_mouse, breadth_first, depth_first
 from libmaze.plot import plot_path, plot_heatmap
 
 
 def get_solver_plotter(string):
     default = {
         'bf': (breadth_first, plot_path),
+        'df': (depth_first,   plot_path),
         'rm': (random_mouse,  plot_heatmap),
     }
     return default.get(string, default['bf'])

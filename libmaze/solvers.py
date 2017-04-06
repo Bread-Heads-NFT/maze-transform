@@ -27,6 +27,23 @@ def breadth_first(root, tail):
     return []
 
 
+def depth_first(root, tail):
+    stack = [[root, node] for node in children(root)]
+    while stack:
+        path = stack.pop()
+        node = path[-1]
+        if node is tail:
+            return path
+        if node is None:
+            continue
+        for child in children(node):
+            if child is None or child.visited:
+                continue
+            child.visited = True
+            stack.append(path + [child])
+    return []
+
+
 def random_mouse(root, tail):
     path = [root]
     node = root
