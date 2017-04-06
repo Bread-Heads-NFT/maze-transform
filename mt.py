@@ -1,4 +1,3 @@
-from collections import deque
 from grid import Grid
 
 
@@ -78,27 +77,3 @@ def maze_transform(maze):
     root = find_first_neq(nodes.array[0], NULL_NODE)
     tail = find_first_neq(nodes.array[-1], NULL_NODE)
     return root, tail
-
-
-def children(node):
-    yield node.top
-    yield node.left
-    yield node.right
-    yield node.bottom
-
-
-def breadth_first(root, tail):
-    queue = deque([root, node] for node in children(root))
-    while queue:
-        path = queue.popleft()
-        node = path[-1]
-        if node is tail:
-            return path
-        if node is None:
-            continue
-        for child in children(node):
-            if child is None or child.visited:
-                continue
-            queue.append(path + [child])
-            child.visited = True
-    return []

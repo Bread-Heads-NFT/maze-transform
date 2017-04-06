@@ -1,7 +1,8 @@
 from pprint import pprint
 from mt import maze_transform, breadth_first
 from mazegen import gen
-from vis import plot_maze_path
+from vis import plot_path
+from solvers import breadth_first
 from grid import Grid
 
 maze = Grid.from_array([
@@ -59,4 +60,4 @@ for dim in DIMS:
     maze = gen(*dim)
     head, tail = maze_transform(maze)
     path = breadth_first(head, tail)
-    plot_maze_path(maze, path, 'grid-{0}x{1}.png'.format(*dim))
+    plot_path(maze, path, 'grid-{0}x{1}.png'.format(*dim))
