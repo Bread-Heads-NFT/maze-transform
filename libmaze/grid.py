@@ -1,9 +1,3 @@
-from collections import namedtuple
-
-range = getattr(__builtins__, 'xrange', range)
-Pos = namedtuple('Pos', 'x,y')
-
-
 class Grid:
     def __init__(self, width, height, array):
         self.width = width

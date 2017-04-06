@@ -13,10 +13,10 @@ options:
 """
 
 from docopt import docopt
-from mt import maze_transform
-from solvers import random_mouse, breadth_first
-from mazegen import gen
-from vis import plot_path, plot_heatmap
+from libmaze.generate import gen
+from libmaze.transform import transform
+from libmaze.solvers import random_mouse, breadth_first
+from libmaze.plot import plot_path, plot_heatmap
 
 
 def get_solver_plotter(string):
@@ -34,9 +34,8 @@ if __name__ == '__main__':
     height = int(args['<height>'])
     maze = gen(width, height)
     solver, plotter = get_solver_plotter(args['--solver'])
-    path = solver(*maze_transform(maze))
+    path = solver(*transform(maze))
     plotter(
         maze,
         path,
-        filename,
-        )
+        ).save(filename)

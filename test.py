@@ -1,9 +1,8 @@
-from pprint import pprint
-from mt import maze_transform, breadth_first
-from mazegen import gen
-from vis import plot_path
-from solvers import breadth_first
-from grid import Grid
+from libmaze.transform import transform
+from libmaze.generate import gen
+from libmaze.plot import plot_path
+from libmaze.solvers import breadth_first
+from libmaze.grid import Grid
 
 maze = Grid.from_array([
     [0, 0, 1, 0],
@@ -23,7 +22,7 @@ maze2 = Grid.from_array([
     [0, 0, 1, 0, 0, 0, 0],
 ])
 
-root, tail = maze_transform(maze)
+root, tail = transform(maze)
 path = breadth_first(root, tail)
 assert len(path) == 4
 assert path == [
@@ -33,7 +32,7 @@ assert path == [
     root.bottom.left.bottom,
 ]
 
-root, tail = maze_transform(maze2)
+root, tail = transform(maze2)
 path = breadth_first(root, tail)
 assert len(path) == 7
 assert path == [
@@ -58,6 +57,6 @@ DIMS = [
 
 for dim in DIMS:
     maze = gen(*dim)
-    head, tail = maze_transform(maze)
+    head, tail = transform(maze)
     path = breadth_first(head, tail)
     plot_path(maze, path, 'grid-{0}x{1}.png'.format(*dim))

@@ -1,4 +1,4 @@
-from grid import Grid
+from .grid import Grid
 
 
 class Node:
@@ -41,7 +41,7 @@ def find_first_neq(xs, item):
     raise ValueError("Item != {0} not found.".format(item))
 
 
-def maze_transform(maze):
+def transform(maze):
     # invariant: only one entrance and exit.
     assert maze.array[0].count(1) == 1
     assert maze.array[-1].count(1) == 1
@@ -63,7 +63,9 @@ def maze_transform(maze):
             if tc == bc == 1 and lc == rc == 0:
                 nodes[x,y] = nodes.get(top(pos), NULL_NODE)
                 continue
-            # junction or dead ends.
+            # junctions, corners, or dead ends. we just need to
+            # play around with references here to make sure
+            # solvers are able to traverse graph.
             node = Node(x, y)
             nodes[x,y] = node
             if lc == 1:

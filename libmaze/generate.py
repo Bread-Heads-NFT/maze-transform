@@ -1,6 +1,5 @@
-from collections import namedtuple
 from random import choice, randint
-from grid import Grid, Pos
+from grid import Grid
 
 
 range = getattr(__builtins__, 'xrange', range)
@@ -8,10 +7,10 @@ range = getattr(__builtins__, 'xrange', range)
 
 def dist2(pos):
     x, y = pos
-    yield Pos(x + 2, y)
-    yield Pos(x - 2, y)
-    yield Pos(x, y + 2)
-    yield Pos(x, y - 2)
+    yield x + 2, y
+    yield x - 2, y
+    yield x, y + 2
+    yield x, y - 2
 
 
 def frontier(grid, pos):
@@ -23,12 +22,14 @@ def neighbors(grid, pos):
 
 
 def between(A, B):
-    x = min(A.x, B.x) + 1 if A.x != B.x else A.x
-    y = min(A.y, B.y) + 1 if A.y != B.y else A.y
-    return Pos(x, y)
+    x0, y0 = A
+    x1, y1 = B
+    x = min(x0, x1) + 1 if x0 != x1 else x0
+    y = min(y0, y1) + 1 if y0 != y1 else y0
+    return x, y
 
 
-def odd(width):
+def random_even(width):
     while True:
         r = randint(2, width - 1)
         if r % 2 == 0:
@@ -40,14 +41,14 @@ def gen(width, height):
         height += 1
     if width % 2 == 0:
         width += 1
+
     maze = Grid.from_dim(width, height - 2, fill=0)
-    seed = Pos(odd(width), 0)
+    seed = (random_even(width), 0)
     maze[seed] = 1
     front = list(frontier(maze, seed))
     explored = set([seed])
     while front:
-        idx = randint(0, len(front) - 1)
-        cell = front.pop(idx)
+        cell = front.pop()
         if cell in explored:
             continue
         explored.add(cell)

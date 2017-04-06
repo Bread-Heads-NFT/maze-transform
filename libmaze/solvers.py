@@ -1,6 +1,6 @@
 from collections import deque
 from random import choice
-from mt import NULL_NODE
+from .transform import NULL_NODE
 
 
 def children(node):
