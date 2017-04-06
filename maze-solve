@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+
+"""
+usage:
+    maze-solve <src> <dst> [--method=<method>]
+    maze-solve (-h | --help)
+
+options:
+    -h --help          show this page.
+    --method=<method>  choose a solving method, one of:
+                         bf (breadth first, default),
+                         df (depth first),
+                         rm (random mouse)
+"""
+
+from libmaze.vendor.docopt import docopt
+from libmaze.read import maze_from_file
+from libmaze.solvers import random_mouse, breadth_first, depth_first
+from libmaze.transform import transform
+from libmaze.plot import plot_path, plot_heatmap
+
+
+def get_solver_plotter(string):
+    default = {
+        'bf': (breadth_first, plot_path),
+        'df': (depth_first,   plot_path),
+        'rm': (random_mouse,  plot_heatmap),
+    }
+    return default.get(string, default['bf'])
+
+
+if __name__ == '__main__':
+    args = docopt(__doc__)
+    src  = args['<src>']
+    dst  = args['<dst>']
+    maze = maze_from_file(src)
+    solver, plotter = get_solver_plotter(args['--method'])
+    path = solver(*transform(maze))
+    plotter(
+        maze,
+        path,
+        ).save(dst)

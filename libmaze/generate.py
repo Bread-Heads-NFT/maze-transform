@@ -33,12 +33,15 @@ def random_even(width):
             return r - 1
 
 
-def generate(width, height):
+def prims(width, height):
     if height % 2 == 0:
         height += 1
     if width % 2 == 0:
         width += 1
 
+    # 0 => wall, 1 => path.
+    # need initial cell to start at even index so we
+    # get nice walls bounding the maze.
     maze = Grid.from_dim(width, height - 2, fill=0)
     seed = (random_even(width), 0)
     maze[seed] = 1
@@ -54,6 +57,40 @@ def generate(width, height):
         peer = choice(list(neighbors(maze, cell)))
         maze[between(peer, cell)] = 1
         front.extend(frontier(maze, cell))
+
+    entrance = make_entrance(maze.array[0])
+    exit = make_entrance(maze.array[-1])
+    return Grid.from_array([entrance] + maze.array + [exit])
+
+
+def recursive_backtrack(width, height):
+    if height % 2 == 0:
+        height += 1
+    if width % 2 == 0:
+        width += 1
+
+    maze = Grid.from_dim(width, height - 2, 0)
+    # optimisation: we can only put paths on odd numbered indices.
+    unexplored = set((x, y) for x, y in maze.indices() if x % 2 == 1)
+    stack = []
+    cell = (random_even(width), 0)
+    unexplored.remove(cell)
+    while unexplored:
+        maze[cell] = 1
+        peers = [
+            p for p in dist2(cell)
+            if maze.legal(p) and p in unexplored
+            ]
+        if not peers:
+            if not stack:
+                break
+            cell = stack.pop()
+            continue
+        stack.append(cell)
+        random_peer = choice(peers)
+        maze[between(random_peer, cell)] = 1
+        cell = random_peer
+        unexplored.remove(random_peer)
 
     entrance = make_entrance(maze.array[0])
     exit = make_entrance(maze.array[-1])

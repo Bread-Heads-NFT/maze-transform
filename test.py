@@ -1,5 +1,5 @@
 from libmaze.transform import transform
-from libmaze.generate import generate
+from libmaze.generate import prims
 from libmaze.plot import plot_path
 from libmaze.solvers import breadth_first
 from libmaze.grid import Grid
@@ -56,7 +56,7 @@ DIMS = [
 
 
 for dim in DIMS:
-    maze = generate(*dim)
+    maze = prims(*dim)
     head, tail = transform(maze)
     path = breadth_first(head, tail)
     plot_path(maze, path).save('grid-{0}x{1}.png'.format(*dim))

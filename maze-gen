@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+
+"""
+usage:
+  maze-gen <width> <height> <filename> [--method=<method>]
+  maze-gen (-h | --help)
+
+options:
+  -h --help           displays this page.
+  --method=<method>   choose a generation method, one of:
+                        pr (prims, default),
+                        rb (recursive backtrack)
+"""
+
+from libmaze.vendor.docopt import docopt
+from libmaze.generate import prims, recursive_backtrack
+from libmaze.plot import plot_path, plot_heatmap
+
+
+def get_generator(string):
+    return {
+        'pr': prims,
+        'rb': recursive_backtrack,
+        }.get(string, prims)
+
+
+if __name__ == '__main__':
+    args   = docopt(__doc__)
+    dst    = args['<filename>']
+    width  = int(args['<width>'])
+    height = int(args['<height>'])
+    generate = get_generator(args['--method'])
+    plot_path(
+        generate(width, height),
+        [],
+        ).save(dst)
