@@ -59,4 +59,4 @@ for dim in DIMS:
     maze = gen(*dim)
     head, tail = transform(maze)
     path = breadth_first(head, tail)
-    plot_path(maze, path, 'grid-{0}x{1}.png'.format(*dim))
+    plot_path(maze, path).save('grid-{0}x{1}.png'.format(*dim))
