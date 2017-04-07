@@ -2,8 +2,8 @@
 
 """
 usage:
-    maze-solve <src> <dst> [--method=<method>]
-    maze-solve (-h | --help)
+    solve <src> <dst> [--method=<method>]
+    solve (-h | --help)
 
 options:
     -h --help          show this page.

@@ -2,8 +2,8 @@
 
 """
 usage:
-  maze-gen <width> <height> <filename> [--method=<method>]
-  maze-gen (-h | --help)
+  gen <width> <height> <filename> [--method=<method>]
+  gen (-h | --help)
 
 options:
   -h --help           displays this page.
