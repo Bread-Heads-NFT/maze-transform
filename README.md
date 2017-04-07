@@ -7,6 +7,6 @@ array of booleans) and solves them by converting into a compact
 graph and running textbook algorithms. Usage:
 
 ```shell
-$ ./maze-gen 100 50 file.png  # 100x50 maze
-$ ./maze-solve file.png file-solved.png
+$ ./gen 100 50 file.png  # 100x50 maze
+$ ./solve file.png file-solved.png
 ```
