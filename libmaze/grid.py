@@ -8,12 +8,10 @@ class Grid:
         self.array = array
 
     def __getitem__(self, pos):
-        x, y = pos
-        return self.array[y][x]
+        return self.array[pos[1]][pos[0]]
 
     def __setitem__(self, pos, value):
-        x, y = pos
-        self.array[y][x] = value
+        self.array[pos[1]][pos[0]] = value
 
     def __iter__(self):
         return iter(self.array)
@@ -29,8 +27,7 @@ class Grid:
                 yield (x, y), v
 
     def legal(self, pos):
-        x, y = pos
-        return 0 <= x < self.width and 0 <= y < self.height
+        return 0 <= pos[0] < self.width and 0 <= pos[1] < self.height
 
     def get(self, pos, default=None):
         if self.legal(pos):
