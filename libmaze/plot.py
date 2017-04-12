@@ -23,9 +23,9 @@ def path_gradient(i, n):
 
 
 def heat_gradient(i, n):
-    # yellow = (255, 255, 0
-    g = int(255 * (1 - i / float(n)))
+    # yellow = (255, 255, 0)
     r = 255
+    g = int(255 * (1 - i / float(n)))
     b = 0
     return r, g, b
 
