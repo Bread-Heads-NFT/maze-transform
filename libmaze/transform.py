@@ -55,7 +55,7 @@ def transform(maze):
         bc = maze.get(bottom(pos), 0)
         rc = maze.get(right(pos), 0)
         lc = maze.get(left(pos), 0)
-        # horizontal and vertical 'paths' with no junctions
+        # horizontal and vertical paths with no junctions
         if tc == bc == 0 and lc == rc == 1:
             nodes[x,y] = nodes.get(left(pos), NULL_NODE)
             continue
@@ -63,8 +63,8 @@ def transform(maze):
             nodes[x,y] = nodes.get(top(pos), NULL_NODE)
             continue
         # junctions, corners, or dead ends. we just need to
-        # play around with references here to make sure
-        # solvers are able to traverse graph.
+        # juggle references here to make sure solvers are able
+        # to correctly traverse the graph.
         node = Node(x, y)
         nodes[x,y] = node
         if lc == 1:
@@ -75,6 +75,10 @@ def transform(maze):
             peer = nodes.get(top(pos), NULL_NODE)
             node.top = peer
             peer.bottom = node
+        # it is sufficient to only consider the top and left
+        # nodes for this algorithm to work, because we traverse
+        # from top->bottom and left->right so eventually all junctions
+        # will be considered
     root = find_first_neq(nodes.array[0], NULL_NODE)
     tail = find_first_neq(nodes.array[-1], NULL_NODE)
     return root, tail

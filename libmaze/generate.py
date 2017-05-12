@@ -54,6 +54,8 @@ def prims(width, height):
             continue
         explored.add(cell)
         maze[cell] = 1
+        # select a random cell with distance 2 to the current cell
+        # and carve out a path between the current cell and said cell.
         peer = choice(list(neighbors(maze, cell)))
         maze[between(peer, cell)] = 1
         front.extend(frontier(maze, cell))
@@ -76,6 +78,7 @@ def recursive_backtrack(width, height):
         maze[cell] = 1
         peers = [p for p in dist2(cell) if maze.legal(p) and p in unexplored]
         if not peers:
+            # cannot progress further: either backtrack if possible or terminate.
             if not stack:
                 break
             cell = stack.pop()
@@ -94,8 +97,8 @@ def wrap(maze):
     return Grid.from_array([entrance] + maze.array + [exit])
 
 
-def make_entrance(reference):
-    idx = choice([i for i, v in enumerate(reference) if v == 1])
-    row = [0] * len(reference)
+def make_entrance(maze_row):
+    idx = choice([i for i, v in enumerate(maze_row) if v == 1])
+    row = [0] * len(maze_row)
     row[idx] = 1
     return row
