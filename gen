@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
 usage:
@@ -15,6 +15,8 @@ options:
 from libmaze.vendor.docopt import docopt
 from libmaze.generate import prims, recursive_backtrack
 from libmaze.plot import plot_path, plot_heatmap
+from libmaze.read import maze_from_file
+import json
 
 
 def get_generator(string):
@@ -26,7 +28,8 @@ def get_generator(string):
 
 if __name__ == '__main__':
     args   = docopt(__doc__)
-    dst    = args['<filename>']
+    dst    = args['<filename>'] + '.png'
+    dstjson = args['<filename>'] + '.json'
     width  = int(args['<width>'])
     height = int(args['<height>'])
     generate = get_generator(args['--method'])
@@ -34,3 +37,10 @@ if __name__ == '__main__':
         generate(width, height),
         [],
         ).save(dst)
+    maze = maze_from_file(dst)
+    i = maze.array[0].index(1)
+    maze.array[0] = maze.array[0][:i] + [2] + maze.array[0][i+1:]
+    j = maze.array[-1].index(1)
+    maze.array[-1] = maze.array[-1][:j] + [3] + maze.array[-1][j+1:]
+    with open(dstjson, 'w') as f:
+    	json.dump(maze.array, f)

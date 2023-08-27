@@ -1,3 +1,14 @@
 test.html
 grid-*.png
 tmp/
+Bread.png
+CaptainGrainbeard.png
+Chicken.png
+ElPanDegenerar.png
+Monke.png
+Noot.png
+Reject.png
+bread/
+metadata/
+libmaze/__pycache__/
+libmaze/vendor/__pycache__/

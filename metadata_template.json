@@ -1,0 +1,37 @@
+{
+    "name": "Bread Maze #000000",
+    "description": "Solve the Bread Head's maze challenge for the chance to win a prize! Powered by 3mail.",
+    "image": "image.png",
+    "external_url": "https://maze.breadheads.io",
+    "attributes": [
+      {
+        "trait_type": "Maze",
+        "value": "###MAZE###"
+      },
+      {
+        "trait_type": "Player",
+        "value": "###PLAYER###"
+      },
+      {
+        "trait_type": "Size",
+        "value": "###SIZE###"
+      },
+      {
+        "trait_type": "Map",
+        "value": "###MAP###"
+      },
+      {
+        "trait_type": "Solution",
+        "value": "###SOLUTION###"
+      }
+    ],
+    "properties": {
+      "files": [
+        {
+          "uri": "image.png",
+          "type": "image/png"
+        }
+      ],
+      "category": "image"
+    }
+  }
